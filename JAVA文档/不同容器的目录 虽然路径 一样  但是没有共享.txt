@@ -1,0 +1,8 @@
+						     宿主机目录   ：     容器内目录   
+
+docker run -d --name my_tomcat2 -p 8080:8080 -v /opt/webapps :   /usr/local/tomee/webapps        docker.io/tomee
+						
+
+
+docker run -d --name my_tomcat3 -p 8080:8080 -v  test_web         :  /usr/local/tomee/webapps         docker.io/tomee
+test_web：/var/lib/docker/volumes/test_web/_data

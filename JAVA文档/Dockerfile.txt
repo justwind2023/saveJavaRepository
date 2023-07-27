@@ -1,0 +1,51 @@
+# 基础镜像
+FROM openjdk:8
+# 维护者
+MAINTAINER LYP
+# 工作目录
+WORKDIR /opt
+# 构建镜像时所执行的命令
+RUN mkdir newfile
+#将本地文件添加到容器内
+ADD ./apache-tomcat-9.0.71.tar.gz /opt
+#构建成功之后执行的命令
+# CMD echo "this is a test ! please be hard!!!" | wc -
+
+#环境变量
+ENV TOMCAT_HOME=/opt/apache-tomcat-9.0.71
+ENV PATH=$PATH:$TOMCAT_HOME/bin
+# 暴露端口!!
+EXPOSE 8080
+
+#指定用户运行
+#USER liuyiping:java
+------------------------------------------------------------------
+
+这个镜像只有在别的镜像继承之后，才能发挥作用    本镜像运行 不会创建test   继承镜像的镜像运行会创建test
+FROM centos
+WORKDIR /data
+ONBUILD  RUN  mkdir test
+
+------------------------------------------------------------------
+运行时后面添加命令可以追加命令        而CMD后面添加命令是覆盖之前的命令
+FROM centos
+ENTRYPOINT ["ls","-a"]
+
+
+------------------自己构建 tomcat镜像    tomcat:1.0--------------------------------
+FROM openjdk:11
+MAINTAINER liuyiping
+ADD ./apache-tomcat-9.0.71.tar.gz  /usr/local
+WORKDIR /usr/local
+#配置环境变量
+ENV TOMCAT_HOME=/usr/local/apache-tomcat-9.0.71
+ENV PATH=$PATH:$TOMCAT_HOME/bin
+# 保留端口
+EXPOSE 8080
+
+#启动容器运行命令
+CMD startup.sh  && tail -F /usr/local/apache-tomcat-9.0.71/bin/catalina.bat
+
+
+
+
